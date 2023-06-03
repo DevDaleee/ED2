@@ -173,3 +173,17 @@ void ImprimeDisciplinasCargaHoraria(Cursos *raizArvCurso, int cod_curso, int ch)
         puts("Nenhum curso na arvore!");
     }
 }
+
+
+void RemoveDisciplinas(Cursos* raizArvCurso, int cod_curso, int cod_disc) {
+    if (raizArvCurso != NULL) {
+        Cursos* encontrou = BuscaCursoCod(raizArvCurso, cod_curso);
+        if (encontrou != NULL && encontrou->cod_curso == cod_curso) {
+            raizArvCurso->arv_disciplinas = RemoveDisc(encontrou->arv_disciplinas, cod_disc);
+        } else {
+            puts("Curso nao encontrado!");
+        }
+    } else {
+        puts("Nenhum curso na arvore!");
+    }
+}

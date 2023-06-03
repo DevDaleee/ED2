@@ -17,3 +17,4 @@ void ImprimeCursosBlocosIguais(Cursos *raizArvCurso, int NumBlocos);
 void ImprimeDisciplinaCurso(Cursos *raizArvCurso, int CodCurso, int CodDisc);
 void ImprimeDisciplinaBloco(Cursos *raizArvCurso, int bloco);
 void ImprimeDisciplinasCargaHoraria(Cursos *raizArvCurso, int cod_curso, int ch);
+void RemoveDisciplinas(Cursos *raizArvCurso, int cod_curso, int cod_disc);

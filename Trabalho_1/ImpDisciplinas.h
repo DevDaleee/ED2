@@ -9,3 +9,4 @@ Disciplinas* BuscaDiscCod(Disciplinas *raizArvDisc, int CodDisc);
 void ImprimeArvDisc(Disciplinas *raizArvDisc);
 void ImprimeDisc(Disciplinas *DisciplinasCurso);
 void ImprimeDiscCargaHoraria(Disciplinas *raizArvDisc, int ch);
+Disciplinas* RemoveDisc(Disciplinas* raizArvDisc, int cod_disciplina);

@@ -130,3 +130,63 @@ void ImprimeDiscCargaHoraria(Disciplinas *raizArvDisc, int ch){
         ImprimeDiscCargaHoraria(raizArvDisc->dir, ch);
     }
 }
+
+Disciplinas* RemoveDisc(Disciplinas* raizArvDisc, int cod_disciplina) {
+    Disciplinas* auxDisc = raizArvDisc;
+    Disciplinas* auxDisc2 = NULL;
+
+    while (auxDisc != NULL) {
+        if (cod_disciplina == auxDisc->cod_disc) {
+            if (auxDisc->esq == NULL && auxDisc->dir == NULL) {
+                if (auxDisc2->esq == auxDisc) {
+                    auxDisc2->esq = NULL;
+                }
+                else {
+                    auxDisc2->dir = NULL;
+                }
+                free(auxDisc);
+                auxDisc = NULL;
+            }
+            else if (auxDisc->esq == NULL && auxDisc->dir != NULL) {
+                if (auxDisc2->esq == auxDisc) {
+                    auxDisc2->esq = auxDisc->dir;
+                }
+                else {
+                    auxDisc2->dir = auxDisc->dir;
+                }
+                free(auxDisc);
+                auxDisc = NULL;
+            }
+            else if (auxDisc->esq != NULL && auxDisc->dir == NULL) {
+                if (auxDisc2->esq == auxDisc) {
+                    auxDisc2->esq = auxDisc->esq;
+                }
+                else {
+                    auxDisc2->dir = auxDisc->esq;
+                }
+                free(auxDisc);
+                auxDisc = NULL;
+            }
+            else {
+                auxDisc2 = auxDisc;
+                auxDisc = auxDisc->esq;
+                while (auxDisc->dir != NULL) {
+                    auxDisc2 = auxDisc;
+                    auxDisc = auxDisc->dir;
+                }
+                auxDisc2->dir = NULL;
+                free(auxDisc);
+                auxDisc = NULL;
+            }
+        }
+        else if (cod_disciplina > auxDisc->cod_disc) {
+            auxDisc2 = auxDisc;
+            auxDisc = auxDisc->dir;
+        }
+        else {
+            auxDisc2 = auxDisc;
+            auxDisc = auxDisc->esq;
+        }
+    }
+    return raizArvDisc;
+}

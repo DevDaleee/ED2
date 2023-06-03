@@ -33,7 +33,7 @@ void EntradaDadosCurso(Cursos **raizArvCurso, char *NomeCurso, int QuantBlocos, 
     NovoCurso->quant_blocos = QuantBlocos;
     NovoCurso->num_sem_disc = NumSemnDisc;
     NovoCurso->arv_disciplinas = NULL;
-    InsereDadosDisc(&(NovoCurso->arv_disciplinas));
+    //InsereDadosDisc(&(NovoCurso->arv_disciplinas));
     NovoCurso->dir = NULL;
     NovoCurso->esq = NULL;
     InsereCurso(&(*raizArvCurso), NovoCurso);
@@ -185,5 +185,83 @@ void RemoveDisciplinas(Cursos* raizArvCurso, int cod_curso, int cod_disc) {
         }
     } else {
         puts("Nenhum curso na arvore!");
+    }
+}
+
+int RemoveCurso(Cursos *raizArvCursos, int cod_curso){
+    int removido = 0;
+    if(raizArvCursos != NULL){
+        if(raizArvCursos->arv_disciplinas != NULL){
+            printf("Curso Ainda tem Disciplinas!\n");
+            printf("Remova-as primeiro!\n");
+        }else{
+            RemoveCursoDaArv(raizArvCursos, cod_curso);
+            removido = 1;
+        }
+    }
+    return removido;
+}
+
+void RemoveCursoDaArv(Cursos *raizArvCursos, int cod_curso) {
+    Cursos* raiz = raizArvCursos;
+    Cursos* filho = NULL;
+    Cursos* atual = raiz;
+
+    // Find the node to be removed and its filho
+    while (atual != NULL && atual->cod_curso != cod_curso) {
+        filho = atual;
+        if (cod_curso < atual->cod_curso) {
+            atual = atual->esq;
+        } else {
+            atual = atual->dir;
+        }
+    }
+
+    // Node not found
+    if (atual == NULL) {
+        return;
+    }
+
+    // Node has no children
+    if (atual->esq == NULL && atual->dir == NULL) {
+        if (filho == NULL) {
+            raizArvCursos = NULL;
+        } else if (filho->esq == atual) {
+            filho->esq = NULL;
+        } else {
+            filho->dir = NULL;
+        }
+        free(atual);
+    }
+    // Node has one child
+    else if (atual->esq == NULL || atual->dir == NULL) {
+        Cursos* child = (atual->esq != NULL) ? atual->esq : atual->dir;
+        if (filho == NULL) {
+            raizArvCursos = child;
+        } else if (filho->esq == atual) {
+            filho->esq = child;
+        } else {
+            filho->dir = child;
+        }
+        free(atual);
+    }
+    // Node has two children
+    else {
+        Cursos* new = atual;
+        Cursos* aux2 = atual->dir;
+
+        while (aux2->esq != NULL) {
+            new = aux2;
+            aux2 = aux2->esq;
+        }
+
+        if (new != atual) {
+            new->esq = aux2->dir;
+        } else {
+            new->dir = aux2->dir;
+        }
+
+        atual->cod_curso = aux2->cod_curso;
+        free(aux2);
     }
 }

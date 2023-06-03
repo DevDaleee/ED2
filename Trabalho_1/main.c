@@ -60,20 +60,29 @@ int main() {
 
 
     //1 - C - 8
+    //printf("Cod curso: ");
+    //scanf("%d", &cod_curso);
+    //ImprimeDisciplinasCurso(raizArvCurso, cod_curso);
+    //printf("Cod Disciplina: ");
+    //scanf("%d", &cod_disc);
+    //if( raizArvCurso != NULL ){
+    //    RemoveDisciplinas(raizArvCurso, cod_curso, cod_disc);
+    //    printf("Disciplina removida com sucesso!\n\n\n");
+    //    ImprimeDisciplinasCurso(raizArvCurso, cod_curso);
+    //}else{
+    //    printf("Árvore de Cursos Vazia!\n");
+    //    printf("Portanto nao foi possivel remover!\n");
+    //}
+
+    //1 - C - 9
     printf("Cod curso: ");
     scanf("%d", &cod_curso);
-    ImprimeDisciplinasCurso(raizArvCurso, cod_curso);
-    printf("Cod Disciplina: ");
-    scanf("%d", &cod_disc);
-    if( raizArvCurso != NULL ){
-        RemoveDisciplinas(raizArvCurso, cod_curso, cod_disc);
-        printf("Disciplina removida com sucesso!\n\n\n");
-        ImprimeDisciplinasCurso(raizArvCurso, cod_curso);
-    }else{
-        printf("Árvore de Cursos Vazia!\n");
-        printf("Portanto nao foi possivel remover!\n");
+    int removido = 1;
+    removido = RemoveCurso(raizArvCurso, cod_curso);
+    if(removido == 1){
+        printf("Curso removido com sucesso!\n");
+        ImprimeArvCursos(raizArvCurso); 
     }
-    
 
     return 0;
 }

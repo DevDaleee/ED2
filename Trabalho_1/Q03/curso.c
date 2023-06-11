@@ -8,21 +8,70 @@
 
 struct cursos {
     int cod_curso;
+    int altura;
     char nome_curso[40];
     int quant_blocos;
     int num_sem_disc;
     Disciplinas *arv_disciplinas;
     Cursos *dir, *esq;
+    
 };
 
+int maiorC(int a, int b){
+    return (a > b) ? a : b;
+}
+
+int alturaCursos(Cursos *raizArvCursos){
+    if(raizArvCursos == NULL){
+        return -1;
+    }else{
+        return raizArvCursos->altura;
+    }
+}
+
+int fatorBalanceamentoCursos(Cursos *raizArvCursos){
+    if(raizArvCursos != NULL){
+        return alturaCursos(raizArvCursos->esq) - alturaCursos(raizArvCursos->dir);   
+    }else{
+        return 0;
+    }
+}
+
+Cursos* rEsqC(Cursos **raizArvCursos) {
+    Cursos* aux = (*raizArvCursos)->dir;
+    (*raizArvCursos)->dir = aux->esq;
+    aux->esq = (*raizArvCursos);
+    return aux;
+}
+
+Cursos* rDirC(Cursos **raizArvCursos) {
+    Cursos* aux = (*raizArvCursos)->esq;
+    (*raizArvCursos)->esq = aux->dir;
+    aux->dir = (*raizArvCursos);
+    return aux;
+}
+
+void balancearCurso(Cursos **raizArvCursos) {
+    int fb = fatorBalanceamentoCursos((*raizArvCursos));
+    if (fb == -2) {
+        if (fatorBalanceamentoCursos((*raizArvCursos)->dir) > 0) {
+            *raizArvCursos = rDirC(&((*raizArvCursos)->dir));
+        }
+        *raizArvCursos = rEsqC(&((*raizArvCursos)));
+    } else if (fb == 2) {
+        if (fatorBalanceamentoCursos((*raizArvCursos)->esq) < 0) {
+            *raizArvCursos = rEsqC(&((*raizArvCursos)->esq));
+        }
+        *raizArvCursos = rDirC(&((*raizArvCursos)));
+    }
+}
 
 void InsereDadosCursos(Cursos **raizArvCurso) {
     EntradaDadosCurso(&(*raizArvCurso), "Seila", 5, 15);
     EntradaDadosCurso(&(*raizArvCurso), "bacana", 3, 15);
     EntradaDadosCurso(&(*raizArvCurso), "manero", 2, 15);
     EntradaDadosCurso(&(*raizArvCurso), "topzera", 5, 15);
-    EntradaDadosCurso(&(*raizArvCurso), "fera", 4, 15);
-    EntradaDadosCurso(&(*raizArvCurso), "oskey", 5, 15);
+    //EntradaDadosCurso(&(*raizArvCurso), "fera", 4, 15);
 }
 
 void EntradaDadosCurso(Cursos **raizArvCurso, char *NomeCurso, int QuantBlocos, int NumSemnDisc) {
@@ -33,7 +82,7 @@ void EntradaDadosCurso(Cursos **raizArvCurso, char *NomeCurso, int QuantBlocos, 
     NovoCurso->quant_blocos = QuantBlocos;
     NovoCurso->num_sem_disc = NumSemnDisc;
     NovoCurso->arv_disciplinas = NULL;
-    //InsereDadosDisc(&(NovoCurso->arv_disciplinas));
+    InsereDadosDisc(&(NovoCurso->arv_disciplinas));
     NovoCurso->dir = NULL;
     NovoCurso->esq = NULL;
     InsereCurso(&(*raizArvCurso), NovoCurso);
@@ -45,18 +94,19 @@ void InsereCurso(Cursos **raizArvCurso, Cursos *NovoCurso) {
     }
     else {
         if (NovoCurso->cod_curso > (*raizArvCurso)->cod_curso) {
-            InsereCurso(&((*raizArvCurso)->dir), NovoCurso);
+            InsereCurso(&((*raizArvCurso)->dir), NovoCurso);    
         }
         else {
             InsereCurso(&((*raizArvCurso)->esq), NovoCurso);
         }
     }
+    balancearCurso(&((*raizArvCurso)));
+    (*raizArvCurso)->altura = maiorC(alturaCursos((*raizArvCurso)->esq), alturaCursos((*raizArvCurso)->dir)) + 1;
 }
 
 int GeraCodCurso(Cursos *raizArvCurso) {
     int CodUnicoCurso;
-    do
-    {
+    do{
         CodUnicoCurso = rand() % 1000;
     } while (BuscaCursoCod(raizArvCurso, CodUnicoCurso) != NULL);
     return (CodUnicoCurso);
@@ -127,7 +177,6 @@ void ImprimeCursosBlocosIguais(Cursos *raizArvCurso, int NumBlocos) {
         }
         ImprimeCursosBlocosIguais(raizArvCurso->esq, NumBlocos);
         ImprimeCursosBlocosIguais(raizArvCurso->dir, NumBlocos);
-
     }
 }
 
@@ -138,16 +187,13 @@ void ImprimeDisciplinaCurso(Cursos *raizArvCurso, int CodCurso, int CodDisc) {
             Disciplinas *AuxDisciplina;
             if ((AuxDisciplina = BuscaDiscCod(AuxCurso->arv_disciplinas, CodDisc)) != NULL) {
                 ImprimeDisc(AuxDisciplina);
-            }
-            else {
+            } else {
                 puts("Disciplina nao encontrada!");
             }
-        }
-        else {
+        } else {
             puts("Curso nao encontrado!");
         }
-    }
-    else {
+    }else {
         puts("Nenhum curso na arvore!");
     }
 }
@@ -256,4 +302,18 @@ void RemoveCursoDaArv(Cursos *raizArvCursos, int cod_curso) {
         atual->cod_curso = aux2->cod_curso;
         free(aux2);
     }
+}
+
+void ImprimirInfosAVLCursos(Cursos *raizArvCursos){
+    printf("\n");
+    printf("Altura Cursos: %d\n", alturaCursos(raizArvCursos));
+    printf("Fator de Balanceamento Cursos: %d\n", fatorBalanceamentoCursos(raizArvCursos));
+    printf("\n");
+}
+
+void ImprimirInfosAVLDisc(Cursos *raizArvCursos){
+    printf("\n");
+    printf("Altura Disciplinas: %d\n", alturaD(raizArvCursos->arv_disciplinas));
+    printf("Fator de Balanceamento Disciplinas: %d\n", fatorBalanceamentoDisc(raizArvCursos->arv_disciplinas));
+    printf("\n");
 }

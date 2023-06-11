@@ -16,10 +16,10 @@ int main() {
 
     //C - 2 / 4 - ABB
     int cod_curso;
-    //printf("Cod Curso: ");
-    //scanf("%d", &cod_curso);
-    //printf("Árvore de Disciplinas\n");
-    //ImprimeDisciplinasCurso(raizArvCurso, cod_curso);
+    printf("Cod Curso: ");
+    scanf("%d", &cod_curso);
+    printf("\nÁrvore de Disciplinas\n");
+    ImprimeDisciplinasCurso(raizArvCurso, cod_curso);
 
     //C - 3 - ABB
     //int NumBlocos;
@@ -28,7 +28,7 @@ int main() {
     //ImprimeCursosBlocosIguais(raizArvCurso, NumBlocos);
 
     //C - 5 - ABB
-    int cod_disc;
+    //int cod_disc;
     //printf("Cod disciplina: ");
     //scanf("%d", &cod_disc);
     //printf("Disciplinas do curso: %d\n", cod_disc);
@@ -75,14 +75,15 @@ int main() {
     //}
 
     //1 - C - 9
-    printf("Cod curso: ");
-    scanf("%d", &cod_curso);
-    int removido = 1;
-    removido = RemoveCurso(raizArvCurso, cod_curso);
-    if(removido == 1){
-        printf("Curso removido com sucesso!\n");
-        ImprimeArvCursos(raizArvCurso); 
-    }
-
+    //printf("Cod curso: ");
+    //scanf("%d", &cod_curso);
+    //int removido = 1;
+    //removido = RemoveCurso(raizArvCurso, cod_curso);
+    //if(removido == 1){
+    //    printf("Curso removido com sucesso!\n");
+    //    ImprimeArvCursos(raizArvCurso); 
+    // }
+    ImprimirInfosAVLCursos(raizArvCurso);
+    ImprimirInfosAVLDisc(raizArvCurso);
     return 0;
 }

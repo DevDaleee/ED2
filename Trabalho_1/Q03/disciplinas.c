@@ -10,8 +10,58 @@ struct disciplinas {
     char nome_disc[50];
     int bloco;
     int carga_horaria;
+    int altura;
     Disciplinas *esq, *dir;
 };
+int maiorD(int a, int b){
+    return (a > b) ? a : b;
+}
+
+int alturaD(Disciplinas *raizArvDisc){
+    if(raizArvDisc == NULL){
+        return -1;
+    }else{
+        return raizArvDisc->altura;
+    }
+}
+
+int fatorBalanceamentoDisc(Disciplinas *raizArvDisc){
+    if(raizArvDisc != NULL){
+        return alturaD(raizArvDisc->esq) - alturaD(raizArvDisc->dir);   
+    }else{
+        return 0;
+    }
+}
+
+Disciplinas* rEsqD(Disciplinas **raizArvDisc) {
+    Disciplinas* aux = (*raizArvDisc)->dir;
+    (*raizArvDisc)->dir = aux->esq;
+    aux->esq = (*raizArvDisc);
+    return aux;
+}
+
+Disciplinas* rDirD(Disciplinas **raizArvDisc) {
+    Disciplinas* aux = (*raizArvDisc)->esq;
+    (*raizArvDisc)->esq = aux->dir;
+    aux->dir = (*raizArvDisc);
+    return aux;
+}
+
+void balancearDisc(Disciplinas **raizArvDisc) {
+    int fb = fatorBalanceamentoDisc((*raizArvDisc));
+    if (fb == -2) {
+        if (fatorBalanceamentoDisc((*raizArvDisc)->dir) > 0) {
+            *raizArvDisc = rDirD(&((*raizArvDisc)->dir));
+        }
+        *raizArvDisc = rEsqD(&((*raizArvDisc)));
+    } else if (fb == 2) {
+        if (fatorBalanceamentoDisc((*raizArvDisc)->esq) < 0) {
+            *raizArvDisc = rEsqD(&((*raizArvDisc)->esq));
+        }
+        *raizArvDisc = rDirD(&((*raizArvDisc)));
+    }
+}
+
 
 void InsereDadosDisc(Disciplinas **raizArvDisc) {
     EntradaDadosDisc(&(*raizArvDisc), "maneira", 2, 60);
@@ -46,6 +96,8 @@ void InsereDisc(Disciplinas **raizArvDisc, Disciplinas *NovaDisc) {
             InsereDisc(&((*raizArvDisc)->esq), NovaDisc);
         }
     }
+    balancearDisc(&((*raizArvDisc)));
+    (*raizArvDisc)->altura = maiorD(alturaD((*raizArvDisc)->esq), alturaD((*raizArvDisc)->dir)) + 1;
 }
 
 int GeraCodDisc(Disciplinas *raizArvDisc) {

@@ -1,6 +1,7 @@
 
 typedef struct cursos Cursos;
 
+int alturaCursos(Cursos *raizArvCursos);
 // Entrada e inserção de dados
 void InsereDadosCursos(Cursos **raizArvCurso);
 void EntradaDadosCurso(Cursos **raizArvCurso, char *NomeCurso, int QuantBlocos, int NumSemnDisc);
@@ -20,3 +21,11 @@ void ImprimeDisciplinasCargaHoraria(Cursos *raizArvCurso, int cod_curso, int ch)
 void RemoveDisciplinas(Cursos *raizArvCurso, int cod_curso, int cod_disc);
 int RemoveCurso(Cursos *raizArvCursos, int cod_curso);
 void RemoveCursoDaArv(Cursos *raizArvCursos, int cod_curso);
+int maiorC(int a, int b);
+int fatorBalanceamentoCursos(Cursos *raizArvCursos);
+Cursos* rEsqC(Cursos **raizArvCursos);
+Cursos* rDirC(Cursos **raizArvCursos);
+void balancearCurso(Cursos **raizArvCursos);
+void ImprimirInfosAVLCursos(Cursos *raizArvCursos);
+void ImprimirInfosAVLDisc(Cursos *raizArvCursos);
+

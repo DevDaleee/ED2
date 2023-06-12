@@ -13,55 +13,58 @@ struct disciplinas {
     int altura;
     Disciplinas *esq, *dir;
 };
-int maiorD(int a, int b){
+
+int maxDisc(int a, int b) {
     return (a > b) ? a : b;
 }
 
-int alturaD(Disciplinas *raizArvDisc){
-    if(raizArvDisc == NULL){
-        return -1;
-    }else{
-        return raizArvDisc->altura;
-    }
-}
-
-int fatorBalanceamentoDisc(Disciplinas *raizArvDisc){
-    if(raizArvDisc != NULL){
-        return alturaD(raizArvDisc->esq) - alturaD(raizArvDisc->dir);   
-    }else{
+int getHeightDisciplinas(Disciplinas* raizArvDisc) {
+    if (raizArvDisc == NULL)
         return 0;
+    return maxDisc(getHeightDisciplinas(raizArvDisc->esq), getHeightDisciplinas(raizArvDisc->dir)) + 1;
+}
+
+int getBalanceDisciplinas(Disciplinas* raizArvDisc) {
+    if (raizArvDisc == NULL)
+        return 0;
+    return getHeightDisciplinas(raizArvDisc->esq) - getHeightDisciplinas(raizArvDisc->dir);
+}
+
+Disciplinas* RDDisc(Disciplinas* y) {
+    Disciplinas* x = y->esq;
+    Disciplinas* T2 = x->dir;
+
+    x->dir = y;
+    y->esq = T2;
+
+    return x;
+}
+
+Disciplinas* REDisc(Disciplinas* x) {
+    Disciplinas* y = x->dir;
+    Disciplinas* T2 = y->esq;
+
+    y->esq = x;
+    x->dir = T2;
+
+    return y;
+}
+
+void balanceTreeDisciplinas(Disciplinas** raizArvDisc) {
+    int balance = getBalanceDisciplinas(*raizArvDisc);
+
+    if (balance > 1) {
+        if (getBalanceDisciplinas((*raizArvDisc)->esq) < 0) {
+            (*raizArvDisc)->esq = REDisc((*raizArvDisc)->esq);
+        }
+        *raizArvDisc = RDDisc(*raizArvDisc);
+    } else if (balance < -1) {
+        if (getBalanceDisciplinas((*raizArvDisc)->dir) > 0) {
+            (*raizArvDisc)->dir = RDDisc((*raizArvDisc)->dir);
+        }
+        *raizArvDisc = REDisc(*raizArvDisc);
     }
 }
-
-Disciplinas* rEsqD(Disciplinas **raizArvDisc) {
-    Disciplinas* aux = (*raizArvDisc)->dir;
-    (*raizArvDisc)->dir = aux->esq;
-    aux->esq = (*raizArvDisc);
-    return aux;
-}
-
-Disciplinas* rDirD(Disciplinas **raizArvDisc) {
-    Disciplinas* aux = (*raizArvDisc)->esq;
-    (*raizArvDisc)->esq = aux->dir;
-    aux->dir = (*raizArvDisc);
-    return aux;
-}
-
-void balancearDisc(Disciplinas **raizArvDisc) {
-    int fb = fatorBalanceamentoDisc((*raizArvDisc));
-    if (fb == -2) {
-        if (fatorBalanceamentoDisc((*raizArvDisc)->dir) > 0) {
-            *raizArvDisc = rDirD(&((*raizArvDisc)->dir));
-        }
-        *raizArvDisc = rEsqD(&((*raizArvDisc)));
-    } else if (fb == 2) {
-        if (fatorBalanceamentoDisc((*raizArvDisc)->esq) < 0) {
-            *raizArvDisc = rEsqD(&((*raizArvDisc)->esq));
-        }
-        *raizArvDisc = rDirD(&((*raizArvDisc)));
-    }
-}
-
 
 void InsereDadosDisc(Disciplinas **raizArvDisc) {
     EntradaDadosDisc(&(*raizArvDisc), "maneira", 2, 60);
@@ -96,8 +99,8 @@ void InsereDisc(Disciplinas **raizArvDisc, Disciplinas *NovaDisc) {
             InsereDisc(&((*raizArvDisc)->esq), NovaDisc);
         }
     }
-    balancearDisc(&((*raizArvDisc)));
-    (*raizArvDisc)->altura = maiorD(alturaD((*raizArvDisc)->esq), alturaD((*raizArvDisc)->dir)) + 1;
+    balanceTreeDisciplinas(&((*raizArvDisc)));
+    (*raizArvDisc)->altura = maxDisc(getHeightDisciplinas((*raizArvDisc)->esq), getHeightDisciplinas((*raizArvDisc)->dir)) + 1;
 }
 
 int GeraCodDisc(Disciplinas *raizArvDisc) {
@@ -183,62 +186,62 @@ void ImprimeDiscCargaHoraria(Disciplinas *raizArvDisc, int ch){
     }
 }
 
-Disciplinas* RemoveDisc(Disciplinas* raizArvDisc, int cod_disciplina) {
-    Disciplinas* auxDisc = raizArvDisc;
-    Disciplinas* auxDisc2 = NULL;
+void RemoveDisc(Disciplinas** raizArvDisc, int cod_disciplina) {
+    Disciplinas* raiz = *raizArvDisc;
+    Disciplinas* filho = NULL;
+    Disciplinas* atual = raiz;
 
-    while (auxDisc != NULL) {
-        if (cod_disciplina == auxDisc->cod_disc) {
-            if (auxDisc->esq == NULL && auxDisc->dir == NULL) {
-                if (auxDisc2->esq == auxDisc) {
-                    auxDisc2->esq = NULL;
-                }
-                else {
-                    auxDisc2->dir = NULL;
-                }
-                free(auxDisc);
-                auxDisc = NULL;
-            }
-            else if (auxDisc->esq == NULL && auxDisc->dir != NULL) {
-                if (auxDisc2->esq == auxDisc) {
-                    auxDisc2->esq = auxDisc->dir;
-                }
-                else {
-                    auxDisc2->dir = auxDisc->dir;
-                }
-                free(auxDisc);
-                auxDisc = NULL;
-            }
-            else if (auxDisc->esq != NULL && auxDisc->dir == NULL) {
-                if (auxDisc2->esq == auxDisc) {
-                    auxDisc2->esq = auxDisc->esq;
-                }
-                else {
-                    auxDisc2->dir = auxDisc->esq;
-                }
-                free(auxDisc);
-                auxDisc = NULL;
-            }
-            else {
-                auxDisc2 = auxDisc;
-                auxDisc = auxDisc->esq;
-                while (auxDisc->dir != NULL) {
-                    auxDisc2 = auxDisc;
-                    auxDisc = auxDisc->dir;
-                }
-                auxDisc2->dir = NULL;
-                free(auxDisc);
-                auxDisc = NULL;
-            }
-        }
-        else if (cod_disciplina > auxDisc->cod_disc) {
-            auxDisc2 = auxDisc;
-            auxDisc = auxDisc->dir;
-        }
-        else {
-            auxDisc2 = auxDisc;
-            auxDisc = auxDisc->esq;
+    while (atual != NULL && atual->cod_disc != cod_disciplina) {
+        filho = atual;
+        if (cod_disciplina < atual->cod_disc) {
+            atual = atual->esq;
+        } else {
+            atual = atual->dir;
         }
     }
-    return raizArvDisc;
+
+    if (atual == NULL) {
+        return;
+    }
+
+    if (atual->esq == NULL && atual->dir == NULL) {
+        if (filho == NULL) {
+            (*raizArvDisc) = NULL;
+        } else if (filho->esq == atual) {
+            filho->esq = NULL;
+        } else {
+            filho->dir = NULL;
+        }
+        free(atual);
+    } else if (atual->esq == NULL || atual->dir == NULL) {
+        Disciplinas* child = (atual->esq != NULL) ? atual->esq : atual->dir;
+        if (filho == NULL) {
+            *raizArvDisc = child;
+        } else if (filho->esq == atual) {
+            filho->esq = child;
+        } else {
+            filho->dir = child;
+        }
+        free(atual);
+    } else {
+        Disciplinas* new = atual;
+        Disciplinas* aux2 = atual->dir;
+
+        while (aux2->esq != NULL) {
+            new = aux2;
+            aux2 = aux2->esq;
+        }
+
+        if (new != atual) {
+            new->esq = aux2->dir;
+        } else {
+            new->dir = aux2->dir;
+        }
+
+        atual->cod_disc = aux2->cod_disc;
+        free(aux2);
+    }
+
+    balanceTreeDisciplinas(raizArvDisc);
+
 }

@@ -17,61 +17,65 @@ struct cursos {
     
 };
 
-int maiorC(int a, int b){
-    return (a > b) ? a : b;
-}
-
-int alturaCursos(Cursos *raizArvCursos){
-    if(raizArvCursos == NULL){
-        return -1;
-    }else{
-        return raizArvCursos->altura;
-    }
-}
-
-int fatorBalanceamentoCursos(Cursos *raizArvCursos){
-    if(raizArvCursos != NULL){
-        return alturaCursos(raizArvCursos->esq) - alturaCursos(raizArvCursos->dir);   
-    }else{
-        return 0;
-    }
-}
-
-Cursos* rEsqC(Cursos **raizArvCursos) {
-    Cursos* aux = (*raizArvCursos)->dir;
-    (*raizArvCursos)->dir = aux->esq;
-    aux->esq = (*raizArvCursos);
-    return aux;
-}
-
-Cursos* rDirC(Cursos **raizArvCursos) {
-    Cursos* aux = (*raizArvCursos)->esq;
-    (*raizArvCursos)->esq = aux->dir;
-    aux->dir = (*raizArvCursos);
-    return aux;
-}
-
-void balancearCurso(Cursos **raizArvCursos) {
-    int fb = fatorBalanceamentoCursos((*raizArvCursos));
-    if (fb == -2) {
-        if (fatorBalanceamentoCursos((*raizArvCursos)->dir) > 0) {
-            *raizArvCursos = rDirC(&((*raizArvCursos)->dir));
-        }
-        *raizArvCursos = rEsqC(&((*raizArvCursos)));
-    } else if (fb == 2) {
-        if (fatorBalanceamentoCursos((*raizArvCursos)->esq) < 0) {
-            *raizArvCursos = rEsqC(&((*raizArvCursos)->esq));
-        }
-        *raizArvCursos = rDirC(&((*raizArvCursos)));
-    }
-}
-
 void InsereDadosCursos(Cursos **raizArvCurso) {
     EntradaDadosCurso(&(*raizArvCurso), "Seila", 5, 15);
     EntradaDadosCurso(&(*raizArvCurso), "bacana", 3, 15);
     EntradaDadosCurso(&(*raizArvCurso), "manero", 2, 15);
     EntradaDadosCurso(&(*raizArvCurso), "topzera", 5, 15);
-    //EntradaDadosCurso(&(*raizArvCurso), "fera", 4, 15);
+    EntradaDadosCurso(&(*raizArvCurso), "fera", 4, 15);
+    EntradaDadosCurso(&(*raizArvCurso), "oskei", 5, 15);
+}
+
+int max(int a, int b) {
+    return (a > b) ? a : b;
+}
+
+int getHeight(Cursos* raizArvCurso) {
+    if (raizArvCurso == NULL)
+        return 0;
+    return max(getHeight(raizArvCurso->esq), getHeight(raizArvCurso->dir)) + 1;
+}
+
+int getBalance(Cursos* raizArvCurso) {
+    if (raizArvCurso == NULL)
+        return 0;
+    return getHeight(raizArvCurso->esq) - getHeight(raizArvCurso->dir);
+}
+
+Cursos* rotateRight(Cursos* y) {
+    Cursos* x = y->esq;
+    Cursos* T2 = x->dir;
+
+    x->dir = y;
+    y->esq = T2;
+
+    return x;
+}
+
+Cursos* rotateLeft(Cursos* x) {
+    Cursos* y = x->dir;
+    Cursos* T2 = y->esq;
+
+    y->esq = x;
+    x->dir = T2;
+
+    return y;
+}
+
+void balanceTree(Cursos** raizArvCurso) {
+    int balance = getBalance(*raizArvCurso);
+
+    if (balance > 1) {
+        if (getBalance((*raizArvCurso)->esq) < 0) {
+            (*raizArvCurso)->esq = rotateLeft((*raizArvCurso)->esq);
+        }
+        *raizArvCurso = rotateRight(*raizArvCurso);
+    } else if (balance < -1) {
+        if (getBalance((*raizArvCurso)->dir) > 0) {
+            (*raizArvCurso)->dir = rotateRight((*raizArvCurso)->dir);
+        }
+        *raizArvCurso = rotateLeft(*raizArvCurso);
+    }
 }
 
 void EntradaDadosCurso(Cursos **raizArvCurso, char *NomeCurso, int QuantBlocos, int NumSemnDisc) {
@@ -81,6 +85,7 @@ void EntradaDadosCurso(Cursos **raizArvCurso, char *NomeCurso, int QuantBlocos, 
     strcpy(NovoCurso->nome_curso, NomeCurso);
     NovoCurso->quant_blocos = QuantBlocos;
     NovoCurso->num_sem_disc = NumSemnDisc;
+    NovoCurso->altura = 0;
     NovoCurso->arv_disciplinas = NULL;
     InsereDadosDisc(&(NovoCurso->arv_disciplinas));
     NovoCurso->dir = NULL;
@@ -100,8 +105,7 @@ void InsereCurso(Cursos **raizArvCurso, Cursos *NovoCurso) {
             InsereCurso(&((*raizArvCurso)->esq), NovoCurso);
         }
     }
-    balancearCurso(&((*raizArvCurso)));
-    (*raizArvCurso)->altura = maiorC(alturaCursos((*raizArvCurso)->esq), alturaCursos((*raizArvCurso)->dir)) + 1;
+    balanceTree(raizArvCurso);
 }
 
 int GeraCodCurso(Cursos *raizArvCurso) {
@@ -224,7 +228,8 @@ void RemoveDisciplinas(Cursos* raizArvCurso, int cod_curso, int cod_disc) {
     if (raizArvCurso != NULL) {
         Cursos* encontrou = BuscaCursoCod(raizArvCurso, cod_curso);
         if (encontrou != NULL && encontrou->cod_curso == cod_curso) {
-            raizArvCurso->arv_disciplinas = RemoveDisc(encontrou->arv_disciplinas, cod_disc);
+            RemoveDisc(&(encontrou->arv_disciplinas), cod_disc);
+            raizArvCurso->arv_disciplinas = encontrou->arv_disciplinas;
         } else {
             puts("Curso nao encontrado!");
         }
@@ -240,15 +245,15 @@ int RemoveCurso(Cursos *raizArvCursos, int cod_curso){
             printf("Curso Ainda tem Disciplinas!\n");
             printf("Remova-as primeiro!\n");
         }else{
-            RemoveCursoDaArv(raizArvCursos, cod_curso);
+            RemoveCursoDaArv(&(raizArvCursos), cod_curso);
             removido = 1;
         }
     }
     return removido;
 }
 
-void RemoveCursoDaArv(Cursos *raizArvCursos, int cod_curso) {
-    Cursos* raiz = raizArvCursos;
+void RemoveCursoDaArv(Cursos** raizArvCursos, int cod_curso) {
+    Cursos* raiz = *raizArvCursos;
     Cursos* filho = NULL;
     Cursos* atual = raiz;
 
@@ -264,27 +269,27 @@ void RemoveCursoDaArv(Cursos *raizArvCursos, int cod_curso) {
     if (atual == NULL) {
         return;
     }
-    
+
     if (atual->esq == NULL && atual->dir == NULL) {
         if (filho == NULL) {
-            raizArvCursos = NULL;
+            *raizArvCursos = NULL;
         } else if (filho->esq == atual) {
             filho->esq = NULL;
         } else {
             filho->dir = NULL;
         }
         free(atual);
-    }else if (atual->esq == NULL || atual->dir == NULL) {
+    } else if (atual->esq == NULL || atual->dir == NULL) {
         Cursos* child = (atual->esq != NULL) ? atual->esq : atual->dir;
         if (filho == NULL) {
-            raizArvCursos = child;
+            *raizArvCursos = child;
         } else if (filho->esq == atual) {
             filho->esq = child;
         } else {
             filho->dir = child;
         }
         free(atual);
-    }else {
+    } else { 
         Cursos* new = atual;
         Cursos* aux2 = atual->dir;
 
@@ -302,18 +307,13 @@ void RemoveCursoDaArv(Cursos *raizArvCursos, int cod_curso) {
         atual->cod_curso = aux2->cod_curso;
         free(aux2);
     }
+
+    balanceTree(raizArvCursos);
 }
 
 void ImprimirInfosAVLCursos(Cursos *raizArvCursos){
     printf("\n");
-    printf("Altura Cursos: %d\n", alturaCursos(raizArvCursos));
-    printf("Fator de Balanceamento Cursos: %d\n", fatorBalanceamentoCursos(raizArvCursos));
-    printf("\n");
-}
-
-void ImprimirInfosAVLDisc(Cursos *raizArvCursos){
-    printf("\n");
-    printf("Altura Disciplinas: %d\n", alturaD(raizArvCursos->arv_disciplinas));
-    printf("Fator de Balanceamento Disciplinas: %d\n", fatorBalanceamentoDisc(raizArvCursos->arv_disciplinas));
+    printf("Altura Cursos: %d\n", getHeight(raizArvCursos));
+    printf("Fator de Balanceamento Cursos: %d\n", getBalance(raizArvCursos));
     printf("\n");
 }

@@ -17,13 +17,14 @@ struct cursos {
     
 };
 
-void InsereDadosCursos(Cursos **raizArvCurso) {
+void InsereDadosCursos(Cursos **raizArvCurso) {  
     EntradaDadosCurso(&(*raizArvCurso), "Seila", 5, 15);
     EntradaDadosCurso(&(*raizArvCurso), "bacana", 3, 15);
     EntradaDadosCurso(&(*raizArvCurso), "manero", 2, 15);
     EntradaDadosCurso(&(*raizArvCurso), "topzera", 5, 15);
     EntradaDadosCurso(&(*raizArvCurso), "fera", 4, 15);
     EntradaDadosCurso(&(*raizArvCurso), "oskei", 5, 15);
+      
 }
 
 int max(int a, int b) {
@@ -36,28 +37,39 @@ int getHeight(Cursos* raizArvCurso) {
     return max(getHeight(raizArvCurso->esq), getHeight(raizArvCurso->dir)) + 1;
 }
 
+int atualizarAltura(Cursos *raizArvCurso){
+    if (raizArvCurso == NULL)
+        return 0;
+    raizArvCurso->altura = max(atualizarAltura(raizArvCurso->esq), atualizarAltura(raizArvCurso->dir)) + 1;
+    return raizArvCurso->altura;
+}
+
 int getBalance(Cursos* raizArvCurso) {
     if (raizArvCurso == NULL)
         return 0;
     return getHeight(raizArvCurso->esq) - getHeight(raizArvCurso->dir);
 }
 
-Cursos* rotateRight(Cursos* y) {
-    Cursos* x = y->esq;
+Cursos* rotateRight(Cursos* raizArvCursos) {
+    Cursos* x = raizArvCursos->esq;
     Cursos* T2 = x->dir;
 
-    x->dir = y;
-    y->esq = T2;
+    x->dir = raizArvCursos;
+    raizArvCursos->esq = T2;
+
+    getHeight(raizArvCursos);
 
     return x;
 }
 
-Cursos* rotateLeft(Cursos* x) {
-    Cursos* y = x->dir;
+Cursos* rotateLeft(Cursos* raizArvCursos) {
+    Cursos* y = raizArvCursos->dir;
     Cursos* T2 = y->esq;
 
-    y->esq = x;
-    x->dir = T2;
+    y->esq = raizArvCursos;
+    raizArvCursos->dir = T2;
+
+    getHeight(raizArvCursos);
 
     return y;
 }
@@ -309,11 +321,4 @@ void RemoveCursoDaArv(Cursos** raizArvCursos, int cod_curso) {
     }
 
     balanceTree(raizArvCursos);
-}
-
-void ImprimirInfosAVLCursos(Cursos *raizArvCursos){
-    printf("\n");
-    printf("Altura Cursos: %d\n", getHeight(raizArvCursos));
-    printf("Fator de Balanceamento Cursos: %d\n", getBalance(raizArvCursos));
-    printf("\n");
 }

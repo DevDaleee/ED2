@@ -5,7 +5,6 @@ typedef struct cursos Cursos;
 void InsereDadosCursos(Cursos **raizArvCurso);
 void EntradaDadosCurso(Cursos **raizArvCurso, char *NomeCurso, int QuantBlocos, int NumSemnDisc);
 void InsereCurso(Cursos **raizArvCurso, Cursos *NovoCurso);
-
 int GeraCodCurso(Cursos *raizArvCurso);
 
 Cursos *BuscaCursoCod(Cursos *raizArvCurso, int CodCurso);

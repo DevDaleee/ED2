@@ -7,7 +7,7 @@ int getBalance(Cursos* raizArvCurso);
 Cursos* rotateRight(Cursos* y);
 Cursos* rotateLeft(Cursos* x);
 void balanceTree(Cursos** raizArvCurso);
-void EntradaDadosCurso(Cursos **raizArvCurso, char *NomeCurso, int QuantBlocos, int NumSemnDisc) ;
+void EntradaDadosCurso(Cursos **raizArvCurso, char *NomeCurso, int QuantBlocos, int NumSemnDisc);
 void InsereDadosCursos(Cursos **raizArvCurso);
 int GeraCodCurso(Cursos *raizArvCurso);
 Cursos *BuscaCursoCod(Cursos *raizArvCurso, int CodCurso);

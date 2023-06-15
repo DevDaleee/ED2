@@ -16,13 +16,13 @@ struct cursos {
 };
 
 
-void InsereDadosCursos(Cursos **raizArvCurso) {
-    EntradaDadosCurso(&(*raizArvCurso), "Seila", 5, 15);
-    EntradaDadosCurso(&(*raizArvCurso), "bacana", 3, 15);
-    EntradaDadosCurso(&(*raizArvCurso), "manero", 2, 15);
-    EntradaDadosCurso(&(*raizArvCurso), "topzera", 5, 15);
-    EntradaDadosCurso(&(*raizArvCurso), "fera", 4, 15);
-    EntradaDadosCurso(&(*raizArvCurso), "oskey", 5, 15);
+void InsereDadosCursos(Cursos **raizArvCurso) {  
+
+    scanf( "%d", &(*raizArvCurso)->cod_curso);
+    scanf( "%s", (*raizArvCurso)->nome_curso);
+    scanf( "%d", &(*raizArvCurso)->quant_blocos);
+    scanf( "%d", &(*raizArvCurso)->num_sem_disc);
+    EntradaDadosCurso(raizArvCurso, (*raizArvCurso)->nome_curso, (*raizArvCurso)->quant_blocos, (*raizArvCurso)->num_sem_disc);
 }
 
 void EntradaDadosCurso(Cursos **raizArvCurso, char *NomeCurso, int QuantBlocos, int NumSemnDisc) {

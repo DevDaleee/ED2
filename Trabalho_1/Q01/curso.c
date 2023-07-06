@@ -16,13 +16,13 @@ struct cursos {
 };
 
 
-void InsereDadosCursos(Cursos **raizArvCurso) {  
-
-    scanf( "%d", &(*raizArvCurso)->cod_curso);
-    scanf( "%s", (*raizArvCurso)->nome_curso);
-    scanf( "%d", &(*raizArvCurso)->quant_blocos);
-    scanf( "%d", &(*raizArvCurso)->num_sem_disc);
-    EntradaDadosCurso(raizArvCurso, (*raizArvCurso)->nome_curso, (*raizArvCurso)->quant_blocos, (*raizArvCurso)->num_sem_disc);
+void InsereDadosCursos(Cursos **raizArvCurso) {
+    EntradaDadosCurso(&(*raizArvCurso), "Seila", 5, 15);
+    EntradaDadosCurso(&(*raizArvCurso), "bacana", 3, 15);
+    EntradaDadosCurso(&(*raizArvCurso), "manero", 2, 15);
+    EntradaDadosCurso(&(*raizArvCurso), "topzera", 5, 15);
+    EntradaDadosCurso(&(*raizArvCurso), "fera", 4, 15);
+    EntradaDadosCurso(&(*raizArvCurso), "oskey", 5, 15);
 }
 
 void EntradaDadosCurso(Cursos **raizArvCurso, char *NomeCurso, int QuantBlocos, int NumSemnDisc) {
@@ -80,6 +80,7 @@ Cursos *BuscaCursoCod(Cursos *raizArvCurso, int CodCurso) {
     return (Encontrou);
 }
 
+//Impressão de dados
 void ImprimeArvCursos(Cursos *raizArvCurso) {
     if (raizArvCurso != NULL) {
         ImprimeArvCursos(raizArvCurso->esq);
@@ -206,6 +207,7 @@ void RemoveCursoDaArv(Cursos *raizArvCursos, int cod_curso) {
     Cursos* filho = NULL;
     Cursos* atual = raiz;
 
+    // Find the node to be removed and its filho
     while (atual != NULL && atual->cod_curso != cod_curso) {
         filho = atual;
         if (cod_curso < atual->cod_curso) {
@@ -215,10 +217,12 @@ void RemoveCursoDaArv(Cursos *raizArvCursos, int cod_curso) {
         }
     }
 
+    // Node not found
     if (atual == NULL) {
         return;
     }
-    
+
+    // Node has no children
     if (atual->esq == NULL && atual->dir == NULL) {
         if (filho == NULL) {
             raizArvCursos = NULL;
@@ -228,7 +232,9 @@ void RemoveCursoDaArv(Cursos *raizArvCursos, int cod_curso) {
             filho->dir = NULL;
         }
         free(atual);
-    }else if (atual->esq == NULL || atual->dir == NULL) {
+    }
+    // Node has one child
+    else if (atual->esq == NULL || atual->dir == NULL) {
         Cursos* child = (atual->esq != NULL) ? atual->esq : atual->dir;
         if (filho == NULL) {
             raizArvCursos = child;
@@ -238,7 +244,9 @@ void RemoveCursoDaArv(Cursos *raizArvCursos, int cod_curso) {
             filho->dir = child;
         }
         free(atual);
-    }else {
+    }
+    // Node has two children
+    else {
         Cursos* new = atual;
         Cursos* aux2 = atual->dir;
 

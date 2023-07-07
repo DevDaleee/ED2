@@ -12,9 +12,11 @@ int main(){
     inserir(&(RaizArv), 30);
     inserir(&(RaizArv), 40);
 
-    ImprimeArvore(RaizArv);
+    ImprimeArvoreInOrdemLLRB(RaizArv);
     printf("\n");
-    remover(&(RaizArv), 40);
-    ImprimeArvore(RaizArv);
+    
+    removerLLRB(&(RaizArv), 40);
+    ImprimeArvoreInOrdemLLRB(RaizArv);
     printf("\n");
+    
 }

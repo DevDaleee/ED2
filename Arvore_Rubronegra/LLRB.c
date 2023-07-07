@@ -32,18 +32,14 @@ void trocaCor(ArvRN **RaizArv) {
     (*RaizArv)->dir->cor = 'B';
 }
 
-void balancear(ArvRN **RaizArv) {
+void balancearLLRB(ArvRN **RaizArv) {
     if ((*RaizArv)->dir != NULL && (*RaizArv)->dir->cor == 'R') {
-        if ((*RaizArv)->dir->esq != NULL && (*RaizArv)->dir->esq->cor == 'R') {
-            rDireita(&(*RaizArv)->dir);
-        }
         rEsquerda(RaizArv);
-    } else if ((*RaizArv)->esq != NULL && (*RaizArv)->esq->cor == 'R') {
-        if ((*RaizArv)->esq->dir != NULL && (*RaizArv)->esq->dir->cor == 'R') {
-            rEsquerda(&(*RaizArv)->esq);
-        }
+    }
+    if ((*RaizArv)->esq != NULL && (*RaizArv)->esq->cor == 'R' && (*RaizArv)->esq->esq != NULL && (*RaizArv)->esq->esq->cor == 'R') {
         rDireita(RaizArv);
-    } else if ((*RaizArv)->esq != NULL && (*RaizArv)->esq->cor == 'R' && (*RaizArv)->dir != NULL && (*RaizArv)->dir->cor == 'R') {
+    }
+    if ((*RaizArv)->esq != NULL && (*RaizArv)->esq->cor == 'R' && (*RaizArv)->dir != NULL && (*RaizArv)->dir->cor == 'R') {
         trocaCor(RaizArv);
     }
 }
@@ -70,7 +66,7 @@ ArvRN* EntradasDados(ArvRN **RaizArv, int valor, int *resp) {
     } else {
         (*RaizArv)->dir = EntradasDados(&(*RaizArv)->dir, valor, resp);
     }
-    balancear(&(*RaizArv));
+    balancearLLRB(&(*RaizArv));
     return (*RaizArv);
 }
 
@@ -83,45 +79,48 @@ ArvRN* inserir(ArvRN **RaizArv, int valor) {
     return *RaizArv;
 }
 
-ArvRN* remover(ArvRN **RaizArv, int valor) {
+ArvRN* removerLLRB(ArvRN **RaizArv, int valor) {
     if (*RaizArv == NULL) {
         return NULL;
     }
-    if ((*RaizArv)->info > valor) {
-        (*RaizArv)->esq = remover(&(*RaizArv)->esq, valor);
-    } else if ((*RaizArv)->info < valor) {
-        (*RaizArv)->dir = remover(&(*RaizArv)->dir, valor);
+    if (valor < (*RaizArv)->info) {
+        if ((*RaizArv)->esq != NULL && (*RaizArv)->esq->cor == 'B' && (*RaizArv)->esq->esq != NULL && (*RaizArv)->esq->esq->cor == 'B') {
+            rDireita(RaizArv);
+        }
+        (*RaizArv)->esq = removerLLRB(&(*RaizArv)->esq, valor);
     } else {
-        if ((*RaizArv)->esq == NULL && (*RaizArv)->dir == NULL) {
+        if ((*RaizArv)->esq != NULL && (*RaizArv)->esq->cor == 'R') {
+            rDireita(RaizArv);
+        }
+        if ((*RaizArv)->info == valor && (*RaizArv)->dir == NULL) {
             free(*RaizArv);
-            *RaizArv = NULL;
-        } else if ((*RaizArv)->esq == NULL) {
-            ArvRN *aux = *RaizArv;
-            *RaizArv = (*RaizArv)->dir;
-            free(aux);
-        } else if ((*RaizArv)->dir == NULL) {
-            ArvRN *aux = *RaizArv;
-            *RaizArv = (*RaizArv)->esq;
-            free(aux);
-        } else {
-            ArvRN *aux = (*RaizArv)->esq;
-            while (aux->dir != NULL) {
-                aux = aux->dir;
+            return NULL;
+        }
+        if ((*RaizArv)->dir != NULL && (*RaizArv)->dir->cor == 'B' && (*RaizArv)->dir->esq != NULL && (*RaizArv)->dir->esq->cor == 'B') {
+            rEsquerda(&(*RaizArv)->dir);
+            if ((*RaizArv)->dir != NULL && (*RaizArv)->dir->dir != NULL && (*RaizArv)->dir->dir->cor == 'R') {
+                rEsquerda(RaizArv);
+            }
+        }
+        if ((*RaizArv)->info == valor) {
+            ArvRN *aux = (*RaizArv)->dir;
+            while (aux->esq != NULL) {
+                aux = aux->esq;
             }
             (*RaizArv)->info = aux->info;
-            aux->info = valor;
-            (*RaizArv)->esq = remover(&(*RaizArv)->esq, valor);
+            (*RaizArv)->dir = removerLLRB(&(*RaizArv)->dir, (*RaizArv)->info);
+        } else {
+            (*RaizArv)->dir = removerLLRB(&(*RaizArv)->dir, valor);
         }
     }
-    balancear(RaizArv);
     return *RaizArv;
 }
 
-void ImprimeArvore(ArvRN *RaizArv) {
+void ImprimeArvoreInOrdemLLRB(ArvRN *RaizArv) {
     if (RaizArv != NULL) {
+        ImprimeArvoreInOrdemLLRB(RaizArv->esq);
         printf("%d ", RaizArv->info);
-        printf("%c \n", RaizArv->cor);
-        ImprimeArvore(RaizArv->esq);
-        ImprimeArvore(RaizArv->dir);
+        printf("%c\n", RaizArv->cor);
+        ImprimeArvoreInOrdemLLRB(RaizArv->dir);
     }
 }

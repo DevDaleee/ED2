@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "LLrb_Imp.h"
+#include "impLLRB.h"
 
 
 int main(){
@@ -12,10 +12,6 @@ int main(){
     inserir(&(RaizArv), 30);
     inserir(&(RaizArv), 40);
 
-    ImprimeArvoreInOrdemLLRB(RaizArv);
-    printf("\n");
-    
-    removerLLRB(&(RaizArv), 20);
     ImprimeArvoreInOrdemLLRB(RaizArv);
     printf("\n");
     

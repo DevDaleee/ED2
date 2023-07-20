@@ -1,8 +1,9 @@
 #include <stdio.h>
+#include <string.h>
 #include <stdlib.h>
 
 typedef struct arb {
-    int info;
+    char info[100];
     struct arb *esq;
     struct arb *dir;
     char cor;
@@ -44,13 +45,13 @@ void balancearLLRB(ArvRN **RaizArv) {
     }
 }
 
-ArvRN* EntradasDados(ArvRN **RaizArv, int valor) {
+ArvRN* EntradasDados(ArvRN **RaizArv, char *valor) {
     if (*RaizArv == NULL) {
         ArvRN *newNode = (ArvRN*)malloc(sizeof(ArvRN));
         if (newNode != NULL) {
-            newNode->info = valor;
+            strcpy(newNode->info, valor);
             newNode->cor = 'R';
-            newNode->dir = NULL;
+            newNode->dir =  NULL;
             newNode->esq = NULL;
         } else {
             printf("Erro de alocacao de memoria!\n");
@@ -59,10 +60,10 @@ ArvRN* EntradasDados(ArvRN **RaizArv, int valor) {
         return newNode;
     }
 
-    if (valor == (*RaizArv)->info) {
+    if (strlen(valor) == strlen((*RaizArv)->info)) {
         printf("Valor ja inserido!\n");
         exit(1);
-    } else if (valor < (*RaizArv)->info) {
+    } else if (strlen(valor) < strlen((*RaizArv)->info)) {
         (*RaizArv)->esq = EntradasDados(&(*RaizArv)->esq, valor);
     } else {
         (*RaizArv)->dir = EntradasDados(&(*RaizArv)->dir, valor);
@@ -71,7 +72,7 @@ ArvRN* EntradasDados(ArvRN **RaizArv, int valor) {
     return (*RaizArv);
 }
 
-ArvRN* inserir(ArvRN **RaizArv, int valor) {
+ArvRN* inserir(ArvRN **RaizArv, char *valor) {
     *RaizArv = EntradasDados(RaizArv, valor);
     if (*RaizArv != NULL) {
         (*RaizArv)->cor = 'B';
@@ -82,7 +83,7 @@ ArvRN* inserir(ArvRN **RaizArv, int valor) {
 void ImprimeArvoreInOrdemLLRB(ArvRN *RaizArv) {
     if (RaizArv != NULL) {
         ImprimeArvoreInOrdemLLRB(RaizArv->esq);
-        printf("%d ", RaizArv->info);
+        printf("%s ", RaizArv->info);
         printf("%c\n", RaizArv->cor);
         ImprimeArvoreInOrdemLLRB(RaizArv->dir);
     }

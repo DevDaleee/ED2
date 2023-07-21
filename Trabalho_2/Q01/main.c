@@ -6,23 +6,23 @@
 int main() {
     ArvRN *RaizArv;
     RaizArv = NULL;
+
     FILE *file;
-    file = fopen("../teste.txt", "r");
+    file = fopen("../palavras.txt", "r");
+
     if (file == NULL) {
         printf("Erro ao Abrir o Arquivo! \n");
         return 0;
     }
-    char palavra[100];
 
-    while (fgets(palavra, 100, file) != NULL) {
-        palavra[strcspn(palavra, "\n")] = '\0';
+    char palavra[100];  
+
+    while(fscanf(file, "%s", palavra) != EOF){
         inserir(&RaizArv, palavra);
     }
-
-    fseek(file, 0, SEEK_SET);
-
+    fclose(file); 
     ImprimeArvoreInOrdemLLRB(RaizArv);
     printf("\n");
-
     return 0;
 }
+    

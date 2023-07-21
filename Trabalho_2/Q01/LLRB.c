@@ -68,6 +68,7 @@ ArvRN* EntradasDados(ArvRN **RaizArv, char *valor) {
     } else {
         (*RaizArv)->dir = EntradasDados(&(*RaizArv)->dir, valor);
     }
+    
     balancearLLRB(&(*RaizArv));
     return (*RaizArv);
 }
@@ -77,7 +78,7 @@ ArvRN* inserir(ArvRN **RaizArv, char *valor) {
     if (*RaizArv != NULL) {
         (*RaizArv)->cor = 'B';
     }
-    return *RaizArv;
+
 }
 
 void ImprimeArvoreInOrdemLLRB(ArvRN *RaizArv) {

@@ -8,7 +8,7 @@ int main() {
     RaizArv = NULL;
 
     FILE *file;
-    file = fopen("../palavras.txt", "r");
+    file = fopen("../teste.txt", "r");
 
     if (file == NULL) {
         printf("Erro ao Abrir o Arquivo! \n");
@@ -20,6 +20,7 @@ int main() {
     while(fscanf(file, "%s", palavra) != EOF){
         inserir(&RaizArv, palavra);
     }
+
     fclose(file); 
     ImprimeArvoreInOrdemLLRB(RaizArv);
     printf("\n");

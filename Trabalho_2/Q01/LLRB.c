@@ -47,30 +47,20 @@ void balancearLLRB(ArvRN **RaizArv) {
 
 ArvRN* EntradasDados(ArvRN **RaizArv, char *valor) {
     if (*RaizArv == NULL) {
-        ArvRN *newNode = (ArvRN*)malloc(sizeof(ArvRN));
-        if (newNode != NULL) {
-            strcpy(newNode->info, valor);
-            newNode->cor = 'R';
-            newNode->dir =  NULL;
-            newNode->esq = NULL;
-        } else {
-            printf("Erro de alocacao de memoria!\n");
-            exit(1);
-        }
-        return newNode;
-    }
-
-    if (strlen(valor) == strlen((*RaizArv)->info)) {
-        printf("Valor ja inserido!\n");
-        exit(1);
-    } else if (strlen(valor) < strlen((*RaizArv)->info)) {
-        (*RaizArv)->esq = EntradasDados(&(*RaizArv)->esq, valor);
+        *RaizArv = (ArvRN*) malloc(sizeof (ArvRN));
+        strcpy((*RaizArv)->info, valor);
+        (*RaizArv)->esq = NULL;
+        (*RaizArv)->dir = NULL;
+        (*RaizArv)->cor = 'R';
     } else {
-        (*RaizArv)->dir = EntradasDados(&(*RaizArv)->dir, valor);
+        if (strcmp(valor, (*RaizArv)->info) < 0) {
+            (*RaizArv)->esq = EntradasDados(&(*RaizArv)->esq, valor);
+        } else {
+            (*RaizArv)->dir = EntradasDados(&(*RaizArv)->dir, valor);
+        }
     }
-    
-    balancearLLRB(&(*RaizArv));
-    return (*RaizArv);
+    balancearLLRB(RaizArv);
+    return *RaizArv;
 }
 
 ArvRN* inserir(ArvRN **RaizArv, char *valor) {

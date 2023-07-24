@@ -16,13 +16,15 @@ int main() {
     }
 
     char palavra[100];  
+    int repetidas = 1;
 
     while(fscanf(file, "%s", palavra) != EOF){
-        inserir(&RaizArv, palavra);
+        inserir(&RaizArv, palavra, repetidas);
+        repetidas ++;
     }
-
-    fclose(file); 
     ImprimeArvoreInOrdemLLRB(RaizArv);
+    repetidas = 0;
+    fclose(file); 
     printf("\n");
     return 0;
 }

@@ -9,6 +9,6 @@ void trocaCor(ArvRN **RaizArv);
 void balancearLLRB(ArvRN **RaizArv);
 
 ArvRN* EntradasDados(ArvRN **RaizArv, char *valor);
-ArvRN* inserir(ArvRN **RaizArv, char *valor);
+ArvRN* inserir(ArvRN **RaizArv, char *valor, int repetidas[]);
 
 void ImprimeArvoreInOrdemLLRB(ArvRN *RaizArv);

@@ -1,6 +1,12 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include "impLPalavra.h"
+
+typedef struct Lpalavra {
+    char Palavra[50];
+    rLinhas *ListaLinhas;
+} Palavra;
 
 typedef struct arb {
     char info[100];
@@ -45,26 +51,30 @@ void balancearLLRB(ArvRN **RaizArv) {
     }
 }
 
-ArvRN* EntradasDados(ArvRN **RaizArv, char *valor) {
+ArvRN* EntradasDados(ArvRN **RaizArv, char *valor, int repetidas) {
     if (*RaizArv == NULL) {
         *RaizArv = (ArvRN*) malloc(sizeof (ArvRN));
         strcpy((*RaizArv)->info, valor);
         (*RaizArv)->esq = NULL;
         (*RaizArv)->dir = NULL;
         (*RaizArv)->cor = 'R';
+        InsereNoLinha(&((*RaizArv)->info.ListaLinhas), repetidas);
     } else {
+        if(strcmpt(valor, (*RaizArv)->info) == 0){
+            InserirLista(&((*RaizArv)->info.ListaLinhas), repetidas);
+        }
         if (strcmp(valor, (*RaizArv)->info) < 0) {
-            (*RaizArv)->esq = EntradasDados(&(*RaizArv)->esq, valor);
+            (*RaizArv)->esq = EntradasDados(&(*RaizArv)->esq, valor, repetidas);
         } else {
-            (*RaizArv)->dir = EntradasDados(&(*RaizArv)->dir, valor);
+            (*RaizArv)->dir = EntradasDados(&(*RaizArv)->dir, valor, repetidas);
         }
     }
     balancearLLRB(RaizArv);
     return *RaizArv;
 }
 
-ArvRN* inserir(ArvRN **RaizArv, char *valor) {
-    *RaizArv = EntradasDados(RaizArv, valor);
+ArvRN* inserir(ArvRN **RaizArv, char *valor, int repetidas) {
+    *RaizArv = EntradasDados(RaizArv, valor, repetidas);
     if (*RaizArv != NULL) {
         (*RaizArv)->cor = 'B';
     }

@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "imp23.h"
+#include "23.h"
 #include "impLista.h"
 
 struct _InfoPalavra {
@@ -80,25 +80,28 @@ Arv23* InsereArv23(Arv23** RaizArv23, Arv23* Pai, InfoPalavra** PalavraSobe, cha
         }
         else {
             int CompInfo1 = strcasecmp(PalavraInfo, (*RaizArv23)->Info1->Palavra);
-            int CompInfo2 = strcasecmp(PalavraInfo, (*RaizArv23)->Info2->Palavra);
+            int CompInfo2; CompInfo2 = -1;
+            if ((*RaizArv23)->NInfos == 2) {
+                CompInfo2 = strcasecmp(PalavraInfo, (*RaizArv23)->Info2->Palavra);
+            }
 
             if (CompInfo1 == 0) {
                 InsereNoLinha(&((*RaizArv23)->Info1->ListaLinhas), LinhaPalavra);
             }
             else if (CompInfo2 == 0) {
                 InsereNoLinha(&((*RaizArv23)->Info2->ListaLinhas), LinhaPalavra);
-            }
+            } 
             else if (CompInfo1 < 0) {
                 MaiorNo = InsereArv23(&((*RaizArv23)->Esq), *RaizArv23, PalavraSobe, PalavraInfo, LinhaPalavra);
             }
-            else if (((*RaizArv23)->NInfos == 1 || ((*RaizArv23)->NInfos == 2)) && CompInfo2 < 0) {
+            else if (((*RaizArv23)->NInfos == 1 || (*RaizArv23)->NInfos == 2) && CompInfo2 < 0) {
                 MaiorNo = InsereArv23(&((*RaizArv23)->Centro), *RaizArv23, PalavraSobe, PalavraInfo, LinhaPalavra);
             }
-            else MaiorNo = InsereArv23(&((*RaizArv23)->Dir), *RaizArv23, PalavraSobe, PalavraInfo, LinhaPalavra);
+            else  MaiorNo = InsereArv23(&((*RaizArv23)->Dir), *RaizArv23, PalavraSobe, PalavraInfo, LinhaPalavra);
 
             if (MaiorNo != NULL) {
                 if((*RaizArv23)->NInfos == 1) {
-                    AdicionaInfoNo(RaizArv23, (*PalavraSobe), MaiorNo);
+                    AdicionaInfoNo(RaizArv23, *PalavraSobe, MaiorNo);
                     MaiorNo = NULL;
                 }
                 else {
@@ -177,6 +180,7 @@ InfoPalavra* CriaInfoPalavra(char* Palavra) {
     InfoPalavra* NovaInfoPalavra = (InfoPalavra*) malloc(sizeof(InfoPalavra));
     strcpy(NovaInfoPalavra->Palavra, Palavra);
     NovaInfoPalavra->ListaLinhas = NULL;
+    return NovaInfoPalavra;
 }
 
 int VerificaFolha(Arv23* NoArv23) {
@@ -268,12 +272,12 @@ void ImprimeNo23(Arv23* No) {
 void ImprimeArv23(Arv23 *RaizArv23, int nivel) {
     if (RaizArv23 != NULL) {
         // Imprimir os valores do nível atual
-        ImprimeArv23(RaizArv23->Esq, 0);
+        /*ImprimeArv23(RaizArv23->Esq, 0);
         ImprimeNo23(RaizArv23);
         ImprimeArv23(RaizArv23->Centro, 0);
-        ImprimeArv23(RaizArv23->Dir, 0);
+        ImprimeArv23(RaizArv23->Dir, 0);*/
 
-        /*for (int i = 0; i < nivel; i++) {
+        for (int i = 0; i < nivel; i++) {
             printf("\t");
         }
 
@@ -294,7 +298,7 @@ void ImprimeArv23(Arv23 *RaizArv23, int nivel) {
         // Recursivamente imprimir os filhos
         ImprimeArv23(RaizArv23->Esq, nivel + 1);
         ImprimeArv23(RaizArv23->Centro, nivel + 1);
-        ImprimeArv23(RaizArv23->Dir, nivel + 1);*/
+        ImprimeArv23(RaizArv23->Dir, nivel + 1);
     }
 }
 

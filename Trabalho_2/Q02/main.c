@@ -1,10 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "imp23.h"
+#include "23.h"
 
 void Menu();
-void ResetaArqTxt();
-void GeraArqFinal();
 void Op2(Arv23* RaizArv23, int* Situacao);
 void Op3(Arv23** RaizArv23, int* Situacao);
 void Op4(Arv23** RaizArv23, int* Situacao);
@@ -26,9 +24,6 @@ int main () {
         {
         case 0:
             puts("Finalizando...");
-            GeraArqFinal();
-            puts("Um arquivo foi gerado com a situacao final do TXT manipulado no programa -> (arquivo_final.txt)");
-            ResetaArqTxt();
             break;
 
         case 1:
@@ -98,31 +93,6 @@ void Menu() {
     printf("Digite sua opcao: ");
 }
 
-void ResetaArqTxt() {
-    FILE* ArqBackup, *ArqManipulavel;
-    char linha[1000];
-    ArqBackup = fopen("../dados_palavras_backup/palavras_1.txt", "r");
-    ArqManipulavel = fopen("../dados_palavras/palavras_1.txt", "w");
-
-    while (fgets(linha, 1000, ArqBackup) != NULL) {
-        fprintf(ArqManipulavel, "%s", linha);
-    }
-    fclose(ArqBackup);
-    fclose(ArqManipulavel);
-}
-
-void GeraArqFinal() {
-    FILE* ArqProg, *ArqFinal;
-    char linha[1000];
-    ArqProg = fopen("../palavras_1.txt", "r");
-    ArqFinal = fopen("../arquivo_final23.txt", "w");
-
-    while (fgets(linha, 1000, ArqProg) != NULL) {
-        fprintf(ArqFinal, "%s", linha);
-    }
-    fclose(ArqProg);
-    fclose(ArqFinal);
-}
 
 void Op2(Arv23* RaizArv23, int* Situacao) {
     char Palavra[50];

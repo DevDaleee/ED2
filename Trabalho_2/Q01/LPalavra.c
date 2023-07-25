@@ -9,8 +9,7 @@ struct RLinhas {
 
 void InserirLista(rLinhas **NoListaLinhas, int NumLinha) {
     if ((*NoListaLinhas) == NULL) {
-        (*NoListaLinhas) = CriaNoLinha(NumLinha);
-        (*NoListaLinhas)->prox = NULL;
+        (*NoListaLinhas) = CriaLista(NumLinha);
     }
     else {
         InserirLista(&((*NoListaLinhas)->prox), NumLinha);

@@ -20,11 +20,11 @@ int main() {
 
     while(fscanf(file, "%s", palavra) != EOF){
         inserir(&RaizArv, palavra, repetidas);
-        repetidas ++;
+        repetidas++;
     }
-    ImprimeArvoreInOrdemLLRB(RaizArv);
     repetidas = 0;
     fclose(file); 
+    ImprimeArvoreInOrdemLLRB(RaizArv);
     printf("\n");
     return 0;
 }

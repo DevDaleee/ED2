@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include "impLLRB.h"
 #include "impLPalavra.h"
 
 typedef struct Lpalavra {
@@ -9,11 +10,11 @@ typedef struct Lpalavra {
 } Palavra;
 
 typedef struct arb {
-    char info[100];
-    struct arb *esq;
-    struct arb *dir;
+    Palavra *info;
+    ArvRN *esq;
+    ArvRN *dir;
     char cor;
-} ArvRN;
+}ArvRN;
 
 void rEsquerda(ArvRN **RaizArv) {
     ArvRN *aux = (*RaizArv)->dir;
@@ -39,52 +40,59 @@ void trocaCor(ArvRN **RaizArv) {
     (*RaizArv)->dir->cor = 'B';
 }
 
+char verificaCor(ArvRN *RaizArv){
+    if(RaizArv == NULL){
+        return 'B';
+    } else {
+        return RaizArv->cor;
+    }
+}
+
 void balancearLLRB(ArvRN **RaizArv) {
-    if ((*RaizArv)->dir != NULL && (*RaizArv)->dir->cor == 'R') {
+    if (verificaCor((*RaizArv)->dir) == 'B' && verificaCor((*RaizArv)->esq) == 'R'){
         rEsquerda(RaizArv);
     }
-    if ((*RaizArv)->esq != NULL && (*RaizArv)->esq->cor == 'R' && (*RaizArv)->esq->esq != NULL && (*RaizArv)->esq->esq->cor == 'R') {
+    if (verificaCor((*RaizArv)->esq) == 'R' && verificaCor((*RaizArv)->esq->esq) == 'R') {
         rDireita(RaizArv);
     }
-    if ((*RaizArv)->esq != NULL && (*RaizArv)->esq->cor == 'R' && (*RaizArv)->dir != NULL && (*RaizArv)->dir->cor == 'R') {
+    if (verificaCor((*RaizArv)->esq) == 'R' && verificaCor((*RaizArv)->dir) == 'R') {
         trocaCor(RaizArv);
     }
 }
 
-ArvRN* EntradasDados(ArvRN **RaizArv, char *valor, int repetidas) {
+void EntradasDados(ArvRN **RaizArv, char *valor, int repetidas) {
     if (*RaizArv == NULL) {
-        *RaizArv = (ArvRN*) malloc(sizeof (ArvRN));
-        strcpy((*RaizArv)->info, valor);
+        *RaizArv = (ArvRN*) malloc(sizeof(ArvRN));
+        strcpy((*RaizArv)->info->Palavra, valor);
         (*RaizArv)->esq = NULL;
         (*RaizArv)->dir = NULL;
         (*RaizArv)->cor = 'R';
-        InsereNoLinha(&((*RaizArv)->info.ListaLinhas), repetidas);
+        InserirLista(&((*RaizArv)->info->ListaLinhas), repetidas);
     } else {
-        if(strcmpt(valor, (*RaizArv)->info) == 0){
-            InserirLista(&((*RaizArv)->info.ListaLinhas), repetidas);
-        }
-        if (strcmp(valor, (*RaizArv)->info) < 0) {
-            (*RaizArv)->esq = EntradasDados(&(*RaizArv)->esq, valor, repetidas);
+        int valorPalavra = strcasecmp(valor, (*RaizArv)->info->Palavra);
+
+        if(valorPalavra == 0){
+            InserirLista(&((*RaizArv)->info->ListaLinhas), repetidas);
+        } else if (valorPalavra < 0) {
+            EntradasDados(&((*RaizArv)->esq), valor, repetidas);
         } else {
-            (*RaizArv)->dir = EntradasDados(&(*RaizArv)->dir, valor, repetidas);
+            EntradasDados(&((*RaizArv)->dir), valor, repetidas);   
         }
+        balancearLLRB(RaizArv);
     }
-    balancearLLRB(RaizArv);
-    return *RaizArv;
 }
 
-ArvRN* inserir(ArvRN **RaizArv, char *valor, int repetidas) {
-    *RaizArv = EntradasDados(RaizArv, valor, repetidas);
-    if (*RaizArv != NULL) {
+void inserir(ArvRN **RaizArv, char *valor, int repetidas) {
+    EntradasDados(RaizArv, valor, repetidas);
+    if (RaizArv != NULL) {
         (*RaizArv)->cor = 'B';
     }
-
 }
 
 void ImprimeArvoreInOrdemLLRB(ArvRN *RaizArv) {
     if (RaizArv != NULL) {
         ImprimeArvoreInOrdemLLRB(RaizArv->esq);
-        printf("%s ", RaizArv->info);
+        printf("%s ", RaizArv->info->Palavra);
         printf("%c\n", RaizArv->cor);
         ImprimeArvoreInOrdemLLRB(RaizArv->dir);
     }

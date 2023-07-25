@@ -7,8 +7,7 @@ void rEsquerda(ArvRN **RaizArv);
 void rDireita(ArvRN **RaizArv);
 void trocaCor(ArvRN **RaizArv);
 void balancearLLRB(ArvRN **RaizArv);
-
-ArvRN* EntradasDados(ArvRN **RaizArv, char *valor);
-ArvRN* inserir(ArvRN **RaizArv, char *valor, int repetidas[]);
-
+char verificaCor(ArvRN *RaizArv);
+void EntradasDados(ArvRN **RaizArv, char *valor, int repetidas);
+void inserir(ArvRN **RaizArv, char *valor, int repetidas);
 void ImprimeArvoreInOrdemLLRB(ArvRN *RaizArv);

@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include "impLista.h"
 
-struct Palavras {
+typedef struct Palavras {
     int NumLinha;
     LPalavras *Prox;
 };

@@ -102,3 +102,11 @@ void ImprimeArvoreInOrdemLLRB(ArvRN *RaizArv) {
         ImprimeArvoreInOrdemLLRB(RaizArv->dir);
     }
 }
+
+void ImprimirListaLinhas(ArvRN *RaizArv){
+    if(RaizArv != NULL){
+        ImprimirListaLinhas(RaizArv->esq);
+        ImprimirLista(RaizArv->info.ListaLinhas);
+        ImprimirListaLinhas(RaizArv->dir);
+    }
+}

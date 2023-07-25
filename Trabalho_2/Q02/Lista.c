@@ -2,12 +2,12 @@
 #include <stdlib.h>
 #include "impLista.h"
 
-typedef struct Palavras {
+struct _Linhas {
     int NumLinha;
-    LPalavras *Prox;
+    Linhas *Prox;
 };
 
-void InsereNoLinha(LPalavras **NoListaLinhas, int NumLinha) {
+void InsereNoLinha(Linhas **NoListaLinhas, int NumLinha) {
     if ((*NoListaLinhas) == NULL) {
         (*NoListaLinhas) = CriaNoLinha(NumLinha);
         (*NoListaLinhas)->Prox = NULL;
@@ -17,16 +17,16 @@ void InsereNoLinha(LPalavras **NoListaLinhas, int NumLinha) {
     }
 }
 
-LPalavras* CriaNoLinha(int NumLinha) {
-    LPalavras* NovoNo = (LPalavras*) malloc(sizeof(LPalavras));
+Linhas* CriaNoLinha(int NumLinha) {
+    Linhas* NovoNo = (Linhas*) malloc(sizeof(Linhas));
     NovoNo->NumLinha = NumLinha;
     NovoNo->Prox = NULL;
 }
 
-void RemoveNoLinha(LPalavras **NoListaLinhas, int NumLinha) {
+void RemoveNoLinha(Linhas **NoListaLinhas, int NumLinha) {
     if ((*NoListaLinhas) != NULL) {
         if ((*NoListaLinhas)->NumLinha == NumLinha) {
-            LPalavras* Temp = (*NoListaLinhas);
+            Linhas* Temp = (*NoListaLinhas);
             (*NoListaLinhas) = (*NoListaLinhas)->Prox;
             free(Temp);
         }
@@ -36,9 +36,9 @@ void RemoveNoLinha(LPalavras **NoListaLinhas, int NumLinha) {
     }
 }
 
-void LiberaListaLinhas(LPalavras **NoListaLinhas);
+void LiberaListaLinhas(Linhas **NoListaLinhas);
 
-void ImprimeListaLinhas(LPalavras *NoListaLinhas) {
+void ImprimeListaLinhas(Linhas *NoListaLinhas) {
     if (NoListaLinhas != NULL) {
         printf("%d ", NoListaLinhas->NumLinha);
         ImprimeListaLinhas(NoListaLinhas->Prox);

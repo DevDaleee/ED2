@@ -8,7 +8,7 @@ int main() {
     RaizArv = NULL;
 
     FILE *file;
-    file = fopen("../teste.txt", "r");
+    file = fopen("../palavras.txt", "r");
 
     if (file == NULL) {
         printf("Erro ao Abrir o Arquivo! \n");
@@ -23,8 +23,9 @@ int main() {
         repetidas++;
     }
     repetidas = 0;
-    fclose(file); 
+    fclose(file);
     ImprimeArvoreInOrdemLLRB(RaizArv);
+    ImprimirListaLinhas(RaizArv);
     printf("\n");
     return 0;
 }

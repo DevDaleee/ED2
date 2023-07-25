@@ -11,3 +11,4 @@ char verificaCor(ArvRN *RaizArv);
 void EntradasDados(ArvRN **RaizArv, char *valor, int repetidas);
 void inserir(ArvRN **RaizArv, char *valor, int repetidas);
 void ImprimeArvoreInOrdemLLRB(ArvRN *RaizArv);
+void ImprimirListaLinhas(ArvRN *RaizArv);

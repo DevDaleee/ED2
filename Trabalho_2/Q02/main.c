@@ -12,7 +12,7 @@ void Op5(Arv23** RaizArv23, int* Situacao);
 
 int main () {
     Arv23* RaizArv23; RaizArv23 = NULL;
-    LPalavras* PalavraSobe; PalavraSobe = NULL;
+    InfoPalavra* PalavraSobe; PalavraSobe = NULL;
     int Situacao, Opcao; Opcao = 0;
 
     LeituraDadosArq(&RaizArv23, &PalavraSobe);
@@ -114,8 +114,8 @@ void ResetaArqTxt() {
 void GeraArqFinal() {
     FILE* ArqProg, *ArqFinal;
     char linha[1000];
-    ArqProg = fopen("../dados_palavras/palavras_1.txt", "r");
-    ArqFinal = fopen("../dados_palavras/arquivo_final23.txt", "w");
+    ArqProg = fopen("../palavras_1.txt", "r");
+    ArqFinal = fopen("../arquivo_final23.txt", "w");
 
     while (fgets(linha, 1000, ArqProg) != NULL) {
         fprintf(ArqFinal, "%s", linha);
@@ -126,7 +126,7 @@ void GeraArqFinal() {
 
 void Op2(Arv23* RaizArv23, int* Situacao) {
     char Palavra[50];
-    LPalavras* InfoBusca;
+    InfoPalavra* InfoBusca;
 
     printf("Digite a palavra a ser buscada(Sem espaco): ");
     if(scanf("%s", Palavra) != 1)

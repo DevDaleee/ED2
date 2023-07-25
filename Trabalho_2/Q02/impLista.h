@@ -1,7 +1,7 @@
-typedef struct Palavras LPalavras;
+typedef struct _Linhas Linhas;
 
-void InsereNoLinha(LPalavras **NoListaLinhas, int NumLinha);
-LPalavras* CriaNoLinha(int NumLinha);
-void RemoveNoLinha(LPalavras **NoListaLinhas, int NumLinha);
-void LiberaListaLinhas(LPalavras **NoListaLinhas);
-void ImprimeListaLinhas(LPalavras *NoListaLinhas);
+void InsereNoLinha(Linhas **NoListaLinhas, int NumLinha);
+Linhas* CriaNoLinha(int NumLinha);
+void RemoveNoLinha(Linhas **NoListaLinhas, int NumLinha);
+void LiberaListaLinhas(Linhas **NoListaLinhas);
+void ImprimeListaLinhas(Linhas *NoListaLinhas);

@@ -87,6 +87,19 @@ void EntradasDados(ArvRN **RaizArv, char *valor, int repetidas) {
     }
 }
 
+void BuscarPalavra(ArvRN *RaizArv, char *valor){
+    if(RaizArv != NULL){
+        int valorPalavra = strcasecmp(valor, RaizArv->info.Palavra);
+        if(valorPalavra == 0){
+            ImprimirLista(RaizArv->info.ListaLinhas);
+        } else if (valorPalavra < 0) {
+            BuscarPalavra(RaizArv->esq, valor);
+        } else {
+            BuscarPalavra(RaizArv->dir, valor);   
+        }
+    }
+}
+
 void inserir(ArvRN **RaizArv, char *valor, int repetidas) {
     EntradasDados(RaizArv, valor, repetidas);
     if (RaizArv != NULL) {

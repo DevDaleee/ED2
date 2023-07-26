@@ -1,0 +1,19 @@
+submergiras | Linhas-> 1 = Tempo de busca: 0.000007 
+
+asilarao | Linhas-> 2 Tempo de busca: 0.000005
+
+centelha | Linhas-> 3 Tempo de busca: 0.000001
+
+contrabaixo | Linhas-> 5 Tempo de busca: 0.000005
+
+delinquisse | Linhas-> 6 Tempo de busca: 0.000002
+
+ignoraremos | Linhas-> 7 Tempo de busca: 0.000005
+
+incendiariamos | Linhas-> 8 Tempo de busca: 0.000001
+
+escamado | Linhas-> 9 Tempo de busca: 0.000002
+
+pasto | Linhas-> 10 Tempo de busca: 0.000002
+
+indexar | Linhas-> 11 Tempo de busca: 0.000004

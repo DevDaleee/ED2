@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <time.h>
 #include <stdlib.h>
 #include "23.h"
 
@@ -95,14 +96,19 @@ void Menu() {
 
 
 void Op2(Arv23* RaizArv23, int* Situacao) {
+    FILE *file;
+    file = fopen("../teste.txt", "r");
+    clock_t start_t, end_t;
+    double total_t;
     char Palavra[50];
     InfoPalavra* InfoBusca;
 
-    printf("Digite a palavra a ser buscada(Sem espaco): ");
-    if(scanf("%s", Palavra) != 1)
-        puts("ERRO ao digitar palavra");
-    else 
-        InfoBusca = BuscaInfo23(RaizArv23, Palavra);
+    while(fscanf(file, "%s", Palavra) != EOF){
+    start_t = clock();
+    InfoBusca = BuscaInfo23(RaizArv23, Palavra);
+    end_t = clock();
+    total_t = (double)(end_t - start_t) / CLOCKS_PER_SEC;
+    printf("Tempo de busca: %lf\n", total_t); 
         if (InfoBusca == NULL){
             *Situacao = 0;
         }
@@ -110,6 +116,7 @@ void Op2(Arv23* RaizArv23, int* Situacao) {
             *Situacao = 1;
             ImprimeInfo(InfoBusca);
         }
+    }
 }
 
 void Op3(Arv23** RaizArv23, int* Situacao) {
@@ -124,7 +131,6 @@ void Op3(Arv23** RaizArv23, int* Situacao) {
     else {
         printf("Digite a linha da palavra: ");
         scanf("%d", &linha);
-        RemoverPalavraLinhaArq23(RaizArv23, Palavra, linha, Situacao);
     } 
     
 }
@@ -140,7 +146,6 @@ void Op4(Arv23** RaizArv23, int* Situacao) {
     else {
         printf("Digite a linha onde a palavra sera inserida: ");
         scanf("%d", &linha);
-        InserePalavraLinhaArq23(RaizArv23, Palavra, linha, Situacao);
     }
 }
 

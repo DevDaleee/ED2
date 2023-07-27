@@ -108,13 +108,14 @@ void Op2(Arv23* RaizArv23, int* Situacao) {
     InfoBusca = BuscaInfo23(RaizArv23, Palavra);
     end_t = clock();
     total_t = (double)(end_t - start_t) / CLOCKS_PER_SEC;
+    printf("Palavra: %s ", Palavra);
     printf("Tempo de busca: %lf\n", total_t); 
         if (InfoBusca == NULL){
             *Situacao = 0;
         }
         else{
             *Situacao = 1;
-            ImprimeInfo(InfoBusca);
+            //ImprimeInfo(InfoBusca);
         }
     }
 }

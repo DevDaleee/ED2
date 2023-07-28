@@ -23,21 +23,6 @@ Linhas* CriaNoLinha(int NumLinha) {
     NovoNo->Prox = NULL;
 }
 
-void RemoveNoLinha(Linhas **NoListaLinhas, int NumLinha) {
-    if ((*NoListaLinhas) != NULL) {
-        if ((*NoListaLinhas)->NumLinha == NumLinha) {
-            Linhas* Temp = (*NoListaLinhas);
-            (*NoListaLinhas) = (*NoListaLinhas)->Prox;
-            free(Temp);
-        }
-        else {
-            RemoveNoLinha(&((*NoListaLinhas)->Prox), NumLinha);
-        }
-    }
-}
-
-void LiberaListaLinhas(Linhas **NoListaLinhas);
-
 void ImprimeListaLinhas(Linhas *NoListaLinhas) {
     if (NoListaLinhas != NULL) {
         printf("%d ", NoListaLinhas->NumLinha);

@@ -12,7 +12,6 @@ InfoPalavra* BuscaInfo23(Arv23* RaizArv23, char* Palavra);
 void ImprimeInfo(InfoPalavra* InfoNo);
 void ImprimeNo23(Arv23* No);
 void ImprimeArv23(Arv23 *RaizArv23, int nivel);
-void removeQuebrasDeLinha(char *str);
 void RemovePalavra23(Arv23** RaizArv23, Arv23** Pai, char* Palavra, int LinhaPalavra);
 void RemoveMaiorInfoEsq(Arv23** RaizArv23, Arv23** PaiMaior, Arv23** MaiorInfoRemove, int LocalInfo);
 void RedistribuiArv23(Arv23** RaizArv23, Arv23** Pai);

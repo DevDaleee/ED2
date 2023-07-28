@@ -75,7 +75,6 @@ void Menu() {
 void Op2(Arv23* RaizArv23, int* Situacao) {
     char Palavra[50];
     InfoPalavra* InfoBusca;
-
     printf("Digite a palavra a ser buscada(Sem espaco): ");
     if(scanf("%s", Palavra) != 1)
         puts("ERRO ao digitar palavra");

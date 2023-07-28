@@ -229,19 +229,6 @@ void ImprimeArv23(Arv23 *RaizArv23, int nivel) {
     }
 }
 
-void removeQuebrasDeLinha(char *str) {
-    int len = strlen(str);
-    if (len > 0) {
-        if (str[len - 1] == '\n') {
-            str[len - 1] = '\0';
-            len--;
-        }
-        if (len > 0 && str[len - 1] == '\r') {
-            str[len - 1] = '\0';
-        }
-    }
-}
-
 void RemoveMaiorInfoEsq(Arv23** RaizArv23, Arv23** PaiMaior, Arv23** MaiorInfoRemove, int LocalInfo) {
     if (MaiorInfoRemove != NULL) {
         if (VerificaFolha(*MaiorInfoRemove) == 1) {

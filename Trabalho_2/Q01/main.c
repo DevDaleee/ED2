@@ -4,14 +4,23 @@
 #include <string.h>
 #include "impLLRB.h"
 
-int main() {
+void menu() {
+    printf("\n\t\tMENU\n");
+    puts("-----------------------------");
+    printf("[1] - Imprimir palavras.\n");
+    printf("[2] - Busca palavra.\n");
+    printf("[3] - Adicionar uma palavra.\n");
+    printf("[0] - Finalizar programa.\n");
+    puts("-----------------------------");
+}
+
+int main (){
     ArvRN *RaizArv;
     RaizArv = NULL;
-    clock_t start_t, end_t;
-    double total_t;
+    int op = 0;
 
     FILE *file;
-    file = fopen("../palavras.txt", "r");
+    file = fopen("../teste.txt", "r");
 
     if (file == NULL) {
         printf("Erro ao Abrir o Arquivo! \n");
@@ -28,24 +37,49 @@ int main() {
     repetidas = 0;
     fclose(file);
 
+    do
+    {
+        menu();
+        printf("Digite uma opcao: ");
+        scanf("%d", &op);
 
-    FILE *arqv;
-    arqv = fopen("../teste.txt", "r");
-    if(arqv == NULL){
-        printf("Erro ao Abrir o Arquivo! \n");
-        return 0;
-    }
+        switch (op)
+        {
+        case 1:
+            if (RaizArv == NULL) {
+                puts("Árvore vazia!");
+            }
+            else {
+                ImprimeArvoreInOrdemLLRB(RaizArv);
+            }
+            break;
 
-    char palavra2[100];
-    while(fscanf(arqv, "%s", palavra2) != EOF){
-        start_t = clock();
-        BuscarPalavra(RaizArv, palavra2);
-        end_t = clock();
-        total_t = (double)(end_t - start_t) / CLOCKS_PER_SEC;
-        printf(" %s : %lf\n", palavra2, total_t);
-    }
+        case 2:
+            char palavra2[50];
+            printf("Digite a palavra que deseja buscar: ");
+            scanf("%s", palavra2);
+            BuscarPalavra(RaizArv, palavra2);
+            
+            break;
+        
+        case 3:
+            char Palavra2[50];
 
-    printf("\n");
-    return 0;
+            printf("Digite uma palavra: ");
+            scanf("%s", Palavra2);
+            inserir(&RaizArv, Palavra2, repetidas=1);
+
+            break;
+
+        case 0:
+            printf("Finalizado!\n");
+            break;
+
+        default:
+            puts("Opcao invalida!");
+            break;
+        }
+    } while (op != 0);
+
+
 }
-    

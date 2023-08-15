@@ -28,7 +28,7 @@ Grafo inicializaGrafo(int n){
 
 
 
-/* Insere arco  v-w no grafo G, supondo que v e w são inteiros distintos entre 0 e n-1. Se grafo já tem arco v-w, não faz nada.*/
+// Insere arco  v-w no grafo G, supondo que v e w são inteiros distintos entre 0 e n-1. Se grafo já tem arco v-w, não faz nada.
 void insereArcoGrafo(Grafo G, int v, int w){
     if(G->A[v][w] == 0){
         G->A[v][w] = 1;
@@ -37,14 +37,12 @@ void insereArcoGrafo(Grafo G, int v, int w){
 }
 
 //Versão da insereArcoGrafo() que não testa se v-w já está presente
-
 void insereArcoNaoSeguraGrafo(Grafo G, int v, int w){
     G->A[v][w] = 1;
     G->m++;
 }
 
-/* Remove arco v-w do grafo G, supondo que v e w são inteiros distintos entre 0 e n-1. Se não existe arco v-w, não faz nada.*/
-
+// Remove arco v-w do grafo G, supondo que v e w são inteiros distintos entre 0 e n-1. Se não existe arco v-w, não faz nada.
 void removeArcoGrafo(Grafo G, int v, int w){
     if(G->A[v][w] == 1){
         G->A[v][w] = 0;
@@ -81,7 +79,6 @@ void imprimeGrafo(Grafo G){
 }
 
 //Libera a memória alocada para o grafo G e devolver NULL.
-
 Grafo LiberaGrafo(Grafo G){
     int i;
     for(i = 0; i<G->n; i++){

@@ -61,7 +61,7 @@ void imprimeVetor(Vertice *ListaAdjVertices[]) {
 void preencherMatriz(Vertice *ListaAdjVertices[], int MatrizAdj[][QntVertices]) {
     for (int origem = 0; origem < QntVertices; origem++) {
         for (int destino = 0; destino < QntVertices; destino++) {
-            MatrizAdj[origem][destino] = TemArco(ListaAdjVertices[origem], destino + 1);
+            MatrizAdj[origem][destino] = temArco(ListaAdjVertices[origem], destino + 1);
         }
     }
 }

@@ -9,9 +9,9 @@ int main() {
     Vertice *ListaVertices[QntVertices];
     int MatAdjacencia[QntVertices][QntVertices];
 
-    PreencheVertices(ListaVertices);
-    PreencheMatrizAdj(ListaVertices, MatAdjacencia);
-    EncontrarMenorCaminho(MatAdjacencia);
+    preencherVertices(ListaVertices);
+    preencherMatriz(ListaVertices, MatAdjacencia);
+    encontrarMenorCaminho(MatAdjacencia);
 
     return 0;
 }

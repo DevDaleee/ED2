@@ -90,25 +90,29 @@ void encontrarMenorCaminho(int MatrizAdj[][QntVertices]) {
     int origem;
     int destino = QntVertices - 1;
 
-    printf("Digite o vertice de inicio: ");
-    scanf("%d", &origem);
-    printf("O vertice de destino será: %d \n" , QntVertices - 1);
-
+    
     clock_t start_time, end_time;
-    double time;
+    double timeDij, timeBell;
+    
+    for(int i=0; i < 50; i++){
+        origem = rand() % 81;
+        start_time = clock();
+        algoDijkstra(MatrizAdj, origem, destino);
+        end_time = clock();
+        timeDij += (double)(end_time - start_time) / CLOCKS_PER_SEC;
+    }
 
-    start_time = clock();
-    algoDijkstra(MatrizAdj, origem, destino);
-    end_time = clock();
-    time = (double)(end_time - start_time) / CLOCKS_PER_SEC;
+    printf("Dijkstra: %lf ms\n", (timeDij * 1000)/50);
 
-    printf("Dijkstra: %lf ms\n", time * 1000);
-
-    start_time = clock();
-    algoBellmanFord(MatrizAdj, origem, destino);
-    end_time = clock();
-
-    printf("Bellman: %lf ms\n", time * 1000);
+    
+    for(int i=0; i < 50; i++){
+        origem = rand() % 81;
+        start_time = clock();
+        algoBellmanFord(MatrizAdj, origem, destino);
+        end_time = clock();
+        timeBell += (double)(end_time - start_time) / CLOCKS_PER_SEC;
+    }
+    printf("Bellman: %lf ms\n", (timeBell * 1000)/50);
 }
 
 void algoDijkstra(int MatrizAdj[][QntVertices], int origem, int destino) {
